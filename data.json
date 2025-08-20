@@ -79,6 +79,14 @@
   { "name": "AzureStorageQuorumRepairAgent", "service": "AzureStorageQuorumRepairAgent", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
   { "name": "AzureStorageQuorumSasPluginContracts", "service": "AzureStorageQuorumSasPluginContracts", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" }
       ]
+    },
+    {
+      "id": "azure-networking",
+      "name": "Azure Networking",
+      "repos": [
+  { "name": "EdgeRpFrontEnd", "service": "EdgeRpFrontEnd", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": [], "pr_link": "" },
+  { "name": "EdgeResourceManager", "service": "EdgeResourceManager", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": [], "pr_link": "" }  
+      ]
     }
   ]
 }
