@@ -1,0 +1,84 @@
+{
+  "teams": [
+    {
+      "id": "networking-wandp",
+      "name": "Networking-WANDP",
+      "repos": [
+  { "name": "RouterConfiguration", "service": "RouterConfiguration", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13162294" },
+  { "name": "RouteLeakAnalyzer", "service": "RouteLeakAnalyzer", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13162108" },
+  { "name": "RouteHijackAnalyzer", "service": "RouteHijackAnalyzer", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13160651" },
+  { "name": "RouteCollectorServiceV4", "service": "RouteCollectorServiceV4", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13160423" },
+  { "name": "RouteCollectorServiceV6", "service": "RouteCollectorServiceV6", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13160345" },
+  { "name": "RouteAnalyzerService", "service": "RouteAnalyzerService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13160237" },
+  { "name": "RouteCollectorBaseService", "service": "RouteCollectorBaseService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13160184" },
+  { "name": "RouteAnalyzerBaseService", "service": "RouteAnalyzerBaseService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13159751" },
+  { "name": "RadarInfrastructureService", "service": "RadarInfrastructureService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13153302" },
+  { "name": "RadarFrontEndService", "service": "RadarFrontEndService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13152453" },
+  { "name": "RadarDeploymentService", "service": "RadarDeploymentService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13152394" },
+  { "name": "PeeringSyncEngineService", "service": "PeeringSyncEngineService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13142563" },
+  { "name": "PerringNocAIService", "service": "PerringNocAIService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13142545" },
+  { "name": "NetworkingPolicyManagerService", "service": "NetworkingPolicyManagerService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13142438" },
+  { "name": "RpkiManagementService", "service": "RpkiManagementService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13162423" },
+  { "name": "RoutingPreferenceFailoverService", "service": "RoutingPreferenceFailoverService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13162823" },
+  { "name": "MapsManagerService", "service": "MapsManagerService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13142403" },
+  { "name": "MonitoringAndMitigationService", "service": "MonitoringAndMitigationService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13141624" },
+  { "name": "MapsTrafficIntelligenceBackend", "service": "MapsTrafficIntelligenceBackend", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13141578" },
+  { "name": "InternetMonitoring", "service": "InternetMonitoring", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13141297" },
+  { "name": "GlobalPeeringsManager", "service": "GlobalPeeringsManager", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13141023" },
+  { "name": "EdgeWatchAI", "service": "EdgeWatchAI", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13140841" },
+  { "name": "EdgeTrafficEngineeringService", "service": "EdgeTrafficEngineeringService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13140699" },
+  { "name": "EdgeTelemetryService", "service": "EdgeTelemetryService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13139447" },
+  { "name": "EdgeRouterConfigurationService", "service": "EdgeRouterConfigurationService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13138675" },
+  { "name": "EdgeNotifierService", "service": "EdgeNotifierService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13138470" },
+  { "name": "EdgeDataProviderService", "service": "EdgeDataProviderService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13136931" },
+  { "name": "EdgeBillingService", "service": "EdgeBillingService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13136726" },
+  { "name": "TelemetryAndBillingService", "service": "TelemetryAndBillingService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13163103" },
+  { "name": "ThousandEyesDataService", "service": "ThousandEyesDataService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13163355" },
+  { "name": "WanMonitoringRelayServer", "service": "WanMonitoringRelayServer", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13163425" },
+  { "name": "WanMonitoringService", "service": "WanMonitoringService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13163512" },
+  { "name": "BGPSpeakerService", "service": "BGPSpeakerService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13128439" },
+  { "name": "RadarWatchdogService", "service": "RadarWatchdogService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13128293" },
+  { "name": "BGPMonService", "service": "BGPMonService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13127811?_a=files" },
+  { "name": "BmpListenerTestClient", "service": "BmpListenerTestClient", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13127436" },
+  { "name": "DeviceInteractionService", "service": "DeviceInteractionService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13126285" },
+  { "name": "WanEdgeMapService", "service": "WanEdgeMapService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13124332" },
+  { "name": "VmManagementService", "service": "VmManagementService", "prs": { "in_review": 0, "complete": 0, "open": 1 }, "blockers": [], "pr_link": "https://msazure.visualstudio.com/One/_git/Networking-WANDP/pullrequest/13150018" }
+      ]
+    },
+    {
+      "id": "family-xapprove",
+      "name": "Family.XApprove",
+      "repos": [
+  { "name": "XApprove.Core", "service": "XApprove.Core", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "XApprove.IntegrationTest", "service": "XApprove.IntegrationTest", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "XApprove.MSFWorker", "service": "XApprove.MSFWorker", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "XApprove.PartnerEventReplicator", "service": "XApprove.PartnerEventReplicator", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "XApprove.Processors", "service": "XApprove.Processors", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "XApprove.StreamsReplicator", "service": "XApprove.StreamsReplicator", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "XApprove.TestRunner", "service": "XApprove.TestRunner", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "XApprove.ThrottleCache", "service": "XApprove.ThrottleCache", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "XApproveFD", "service": "XApproveFD", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "XApproveFD.UnitTests", "service": "XApproveFD.UnitTests", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "XApproveWd", "service": "XApproveWd", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "XApproveWd.EPS", "service": "XApproveWd.EPS", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "XApprove.Ws.StreamsReplicator", "service": "XApprove.Ws.StreamsReplicator", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" }
+      ]
+    },
+    {
+      "id": "microsoft-xbox-azurestoragecommon",
+      "name": "Microsoft.Xbox.AzureStorageCommon",
+      "repos": [
+  { "name": "ApDeployments", "service": "ApDeployments", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "AtcLogParser", "service": "AtcLogParser", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "AzureStorageCommons.DevStorageTest", "service": "AzureStorageCommons.DevStorageTest", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "AzureStorageCommons.FunctionalTest", "service": "AzureStorageCommons.FunctionalTest", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "AzureStorageCommons.Logging", "service": "AzureStorageCommons.Logging", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "AzureStorageCommons.TestCommon", "service": "AzureStorageCommons.TestCommon", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "AzureStorageCommons.UnitTest", "service": "AzureStorageCommons.UnitTest", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "AzureStorageCommonsSasTestPlugin", "service": "AzureStorageCommonsSasTestPlugin", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "AzureStorageQuorumRepairAgent", "service": "AzureStorageQuorumRepairAgent", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" },
+  { "name": "AzureStorageQuorumSasPluginContracts", "service": "AzureStorageQuorumSasPluginContracts", "prs": { "in_review": 0, "complete": 0, "open": 0 }, "blockers": ["No Access"], "pr_link": "" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+* { box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin: 0; color: #222; background: #f6f7fb; }
+header { background: #0f172a; color: #fff; padding: 28px 24px; }
+header h1 { margin: 0 0 6px 0; font-size: 20px; }
+header .subtitle { margin: 0; opacity: 0.9; }
+main { padding: 20px; max-width: 1200px; margin: 0 auto; /* subtle horizontal rhythm */ background-image: repeating-linear-gradient(180deg, rgba(2,6,23,0.02) 0px, rgba(2,6,23,0.02) 1px, transparent 1px, transparent 120px); }
+.controls { margin-bottom: 12px; }
+.controls label { margin-right: 8px; }
+.teams-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 18px; }
+
+/* Hide partner/customer summary cards temporarily */
+.teams-grid { display: none; }
+.team-card { background: #fff; padding: 12px; border-radius: 8px; box-shadow: 0 1px 2px rgba(16,24,40,0.06); cursor: pointer; }
+.team-card h3 { margin: 0 0 8px 0; font-size: 16px; }
+.card-row { display: flex; gap: 12px; align-items: center; }
+.pie-wrap, .repo-pie-wrap { width: 72px; height: 72px; display:flex; align-items:center; justify-content:center; }
+.pie { --p: 50%; width: 64px; height: 64px; border-radius: 50%; background: conic-gradient(#10b981 var(--p), #e5e7eb 0); box-shadow: inset 0 -6px 12px rgba(0,0,0,0.03); display: flex; align-items:center; justify-content:center; font-weight: 600; color: #0f172a; }
+.pie::after { content: var(--p); font-size: 12px; }
+.card-stats .stat { font-size: 13px; color: #334155; }
+.details { background: #fff; padding: 14px; border-radius: 8px; box-shadow: 0 1px 2px rgba(16,24,40,0.06); margin-bottom: 18px; }
+.details h2 { margin: 0 0 8px 0; }
+.repos { max-width: 1100px; margin: 0 auto 36px auto; }
+.repo-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px; background: #fff; border-radius: 8px; margin-bottom: 8px; }
+.repo-left { display:flex; flex-direction: column; gap: 4px; }
+.repo-name { font-weight: 600; }
+.repo-service { color: #6b7280; font-size: 13px; }
+.repo-blockers { color: #ef4444; font-size: 13px; }
+.counts { font-size: 13px; color: #475569; display:flex; gap: 12px; align-items:center; }
+.c.in-review { color: #f59e0b; }
+.c.complete { color: #10b981; }
+.c.open { color: #3b82f6; }
+.repo-percent { font-weight:700; color:#0f172a; }
+.blockers { margin: 8px 0 0 0; padding-left: 18px; }
+.no-repos { padding: 12px; color: #475569; font-style: italic; }
+/* Services list */
+.services-list { list-style: none; padding-left: 0; margin: 8px 0; }
+.services-list li { padding: 6px 8px; background:#fff; border-radius:6px; margin-bottom:6px; box-shadow: 0 1px 2px rgba(16,24,40,0.04); }
+.services-list li:nth-child(even) { background: linear-gradient(180deg, #ffffff, #fbfdff); }
+.services-list a { color: #0f172a; text-decoration: none; font-weight: 600; }
+.services-list a:hover { text-decoration: underline; }
+/* Boxed wrapper for services shown under the overview bar */
+.services-wrapper { background: #fff; padding: 12px; border-radius: 8px; box-shadow: 0 8px 20px rgba(16,24,40,0.06); border: 1px solid rgba(2,6,23,0.06); margin-top: 18px; }
+.services-wrapper .services-list { margin: 0; }
+
+/* new separate widget classes */
+.widget { padding: 16px; display: block; }
+.services-widget { background: #fff; padding: 12px; border-radius: 8px; box-shadow: 0 8px 20px rgba(16,24,40,0.06); border: 1px solid rgba(2,6,23,0.06); }
+.pie-widget { background: #fff; padding: 12px; border-radius: 8px; box-shadow: 0 8px 20px rgba(16,24,40,0.06); border: 1px solid rgba(2,6,23,0.06); }
+.services-wrapper { position: relative; }
+.services-wrapper .services-content { max-height: 260px; overflow-y: auto; padding-right: 6px; }
+.services-list { margin: 0; }
+.services-list li { display:flex; justify-content:space-between; align-items:center; gap:8px; padding: 8px 10px; }
+.services-list .service-left { display:flex; gap:8px; align-items:center; }
+.service-team { color:#6b7280; font-size:12px; margin-left:8px; }
+.service-badges { display:flex; gap:6px; align-items:center; }
+.badge { background:#f1f5f9; color:#0f172a; padding:2px 6px; border-radius:6px; font-size:12px; }
+.badge.complete { background: #dcfce7; color: #065f46; }
+.badge.in-review { background: #fff7ed; color: #92400e; }
+.badge.open { background: #e6f2ff; color: #08306b; }
+.badge.no-access { background: #fee2e2; color: #b91c1c; font-weight: 600; }
+.status-widget { background:#fff; border-radius:8px; padding:12px; border:1px solid rgba(2,6,23,0.06); box-shadow: 0 6px 16px rgba(16,24,40,0.04); }
+.status-list { list-style:none; padding-left:0; margin:8px 0 0 0; display:flex; gap:10px; flex-wrap:wrap; }
+.status-list { display:flex; gap:10px; flex-wrap:wrap; padding:0; margin:8px 0 0 0; }
+.status-list li { width:88px; height:88px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#fff; border-radius:8px; box-shadow: 0 4px 10px rgba(16,24,40,0.06); }
+.status-num { font-size:20px; font-weight:800; color:#0f172a; }
+.status-label { font-size:12px; color:#475569; margin-top:4px; }
+/* full-tile colors for each status */
+.status-list li.complete { background: #10b981; color: #ffffff; }
+.status-list li.complete .status-num, .status-list li.complete .status-label { color: #ffffff; }
+.status-list li.in-review { background: #f59e0b; color: #ffffff; }
+.status-list li.in-review .status-num, .status-list li.in-review .status-label { color: #ffffff; }
+.status-list li.open { background: #3b82f6; color: #ffffff; }
+.status-list li.open .status-num, .status-list li.open .status-label { color: #ffffff; }
+.status-list li.merged { background: #8b5cf6; color: #ffffff; }
+.status-list li.merged .status-num, .status-list li.merged .status-label { color: #ffffff; }
+/* additional statuses for counts second row */
+.status-list li.approved { background: #22c55e; color: #ffffff; }
+.status-list li.approved .status-num, .status-list li.approved .status-label { color: #ffffff; }
+.status-list li.closed { background: #64748b; color: #ffffff; }
+.status-list li.closed .status-num, .status-list li.closed .status-label { color: #ffffff; }
+/* widget box */
+.widget { padding: 16px; display: block; height: 100%; }
+.pie-legend { display:flex; gap:12px; justify-content:center; margin-top:8px; color:#475569; font-size:13px; }
+.legend-item { display:flex; gap:8px; align-items:center; }
+.swatch { width:12px; height:12px; border-radius:3px; display:inline-block; }
+.sw-complete { background:#10b981; }
+.sw-in-review { background:#f59e0b; }
+.sw-open { background:#3b82f6; }
+footer { padding: 18px; text-align: center; color: #475569; }
+
+/* Partners summary */
+.partners-list { list-style: none; padding-left: 0; margin: 8px 0 0 0; display: flex; flex-direction: column; gap: 6px; }
+.partners-list li { display:flex; justify-content: space-between; align-items: center; padding: 6px 8px; background: #fff; border-radius: 6px; box-shadow: 0 1px 2px rgba(16,24,40,0.04); border: 1px solid rgba(2,6,23,0.04); }
+.partners-list .partner-name { font-weight: 600; color: #0f172a; }
+.partners-list .count-pill { background: #eef2f7; color: #0f172a; padding: 2px 8px; border-radius: 999px; font-weight: 700; min-width: 28px; text-align: center; }
+
+/* Compact services styling within the Services widget only */
+#overview-services .services-content { font-size: 13px; max-height: 260px; overflow-y: auto; padding-right: 6px; }
+#overview-services .services-list a { font-size: 13px; }
+#overview-services .services-list li { padding: 4px 6px; margin-bottom: 4px; gap: 6px; }
+#overview-services .services-list .service-left { gap: 6px; }
+#overview-services .service-team { font-size: 11px; }
+#overview-services .service-badges { gap: 4px; }
+#overview-services .badge { font-size: 11px; padding: 1px 6px; border-radius: 5px; }
+
+/* Pie layout: donut on the left, dictionary/legend on the right */
+.pie-layout { display:flex; align-items:center; gap:16px; }
+.pie-layout .pie { flex: 0 0 auto; }
+/* Make the legend vertical so the donut can be larger */
+.pie-layout .pie-legend { margin-top:0; justify-content:flex-start; align-items:flex-start; flex-direction: column; gap: 8px; }
+/* Enlarge the overview donut specifically */
+#overview-pie .pie { width: 160px; height: 160px; }
+#overview-pie .pie-label { font-size: 18px; color: #fff; }
+/* Blockers donut sizing to keep visual consistency */
+#overview-blockers .pie { width: 140px; height: 140px; }
+#overview-blockers .pie-label { font-size: 16px; color: #0f172a; font-weight: 700; }
+/* Blockers bar chart */
+#overview-blockers .blockers-bars { display:flex; flex-direction: column; gap: 8px; }
+#overview-blockers .blockers-bar { display:grid; grid-template-columns: minmax(120px, 1.6fr) 5fr auto; gap: 10px; align-items: center; }
+#overview-blockers .bar-label { color:#334155; font-size: 13px; overflow: hidden; text-overflow: unset; white-space: normal; word-break: break-word; }
+#overview-blockers .bar-track { background:#eef2f7; border-radius: 999px; height: 14px; position: relative; overflow: hidden; }
+#overview-blockers .bar-fill { height: 100%; border-radius: 999px; box-shadow: inset 0 -4px 8px rgba(0,0,0,0.05); }
+#overview-blockers .bar-count { font-weight: 700; color: #0f172a; min-width: 24px; text-align: right; }
+#overview-blockers .empty-message { color: #64748b; font-size: 13px; padding: 8px 0; }
+
+/* Counts widget layout improvements */
+#overview-statuses .status-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+#overview-statuses .status-list li { width: auto; height: auto; padding: 14px 10px; }
+#overview-statuses .status-num { font-size: 22px; }
+#overview-statuses .status-label { font-size: 12px; }
+
+@media (max-width: 600px) {
+  #overview-statuses .status-list { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .pie-layout { flex-direction: column; align-items: center; }
+  .pie-layout .pie-legend { justify-content: center; }
+}
+
+@media (max-width:600px) {
+  .card-row { flex-direction: column; align-items: flex-start; }
+  .pie-wrap { width: 56px; height: 56px; }
+  /* partners summary is in the right column by default */
+}
+
+  /* (reverted) Services list remains single column */
+/* Desktop three-column layout (first row spans all columns) */
+@media (min-width: 900px) {
+  main { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch; }
+  /* First row: overview spans all columns */
+  .site-overview { grid-column: 1 / -1; }
+  /* Move donut to the same row as blockers (row 3) and same column as services (col 2) */
+  #overview-pie { grid-column: 2; grid-row: 3; margin-top: 0; position: static; }
+  /* Partners in column 1, row 2 */
+  #partners-summary { grid-column: 1; grid-row: 2; margin-top: 12px; }
+  /* Services spans columns 2 and 3 in row 2 */
+  #overview-services { grid-column: 2 / span 2; grid-row: 2; margin-top: 12px; width: 100%; justify-self: stretch; }
+  /* Let the right-widgets' children become direct grid items */
+  #right-widgets { display: contents; }
+  /* Place PR counts and blockers on the same row; blockers in the donut's column */
+  #overview-statuses { grid-column: 1; grid-row: 3; margin-top: 6px; position: static; }
+  #overview-blockers { grid-column: 3; grid-row: 3; }
+}
+
+/* When a service is selected on small screens, pin the pie widget so it doesn't get pushed down */
+@media (max-width: 899px) {
+  #overview-pie.pinned { position: fixed; right: 12px; top: 80px; width: 260px; z-index: 1200; }
+}
+/* (desktop) .site-overview spans the first row in the media query above */
+/* Site overview progress bar */
+.site-overview { background: #fff; padding: 14px; border-radius: 8px; box-shadow: 0 1px 2px rgba(16,24,40,0.06); margin: 18px 0; }
+.overview-row { display:block; }
+.overview-row .overview-bar { width: 100%; }
+.overview-row #overview-services { width: 100%; margin: 0; }
+.overview-bar { background: #e6eef7; border-radius: 8px; height: 22px; overflow: hidden; margin-bottom: 12px; }
+/* professional-looking progress bar: subtle track + filled gradient */
+.overview-bar { background: #f1f5f9; border-radius: 10px; height: 22px; overflow: hidden; border: 1px solid #e6eef7; }
+/* filled portion of the progress bar (solid, as before) */
+.overview-progress { background: #10b981; color: #fff; display:flex; align-items:center; justify-content:center; font-weight:600; transition: width 400ms ease; height: 100%; box-shadow: inset 0 -6px 12px rgba(0,0,0,0.03); border-radius: 10px; overflow: hidden; }
+.overview-meta { margin: 8px 0 0 0; color: #334155; }
+
+/* hide the textual summary line under the progress bar (counts) */
+#overview-meta { display: none; }
+
+/* overview donut */
+.overview-pie { margin-top: 12px; display:flex; justify-content:center; }
+.overview-pie .pie { --p: 50%; width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#10b981 var(--p), #e5e7eb 0); display:flex; align-items:center; justify-content:center; font-weight:700; color:#0f172a; box-shadow: inset 0 -6px 12px rgba(0,0,0,0.03); }
+.overview-pie .pie-label { font-size:18px; color:#fff; }
+
+.overview-controls { display:flex; gap:8px; align-items:center; margin-bottom:8px; }
+.overview-controls label { color:#475569; }
+.overview-controls select { padding:6px 8px; border-radius:6px; border:1px solid #e6eef7; background:#fff; }
+
+/* removed shimmer animation to keep a professional static appearance */
+
+/* KPI row */
+

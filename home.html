@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OKR Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+  <h1>OKR Dashboard</h1>
+  <p class="subtitle">Overall PR progress across all partner customers</p>
+  </header>
+
+  <main>
+  <div class="site-overview" id="site-overview">
+      <h2>OKR Overall Progress</h2>
+      
+        <div class="overview-controls">
+        <label for="overview-team-select">Partner</label>
+        <select id="overview-team-select">
+          <option value="all">All</option>
+        </select>
+        <label for="overview-metric-select">PR Status</label>
+        <select id="overview-metric-select">
+          <option value="all_statuses">All</option>
+          <option value="draft">Draft</option>
+          <option value="ready">Ready for Review</option>
+          <option value="in_review">In Review</option>
+          <option value="changes_requested">Changes Requested</option>
+          <option value="approved">Approved</option>
+          <option value="merged">Merged</option>
+          <option value="closed">Closed</option>
+          <option value="blocked">Blocked</option>
+          <option value="complete">Complete</option>
+          <option value="open">PR opened</option>
+        </select>
+        
+      </div>
+      <div class="overview-bar">
+        <div class="overview-progress" id="overview-progress" style="width:0%">0%</div>
+      </div>
+      <p id="overview-meta">Loading...</p>
+  </div>
+
+    <!-- Services widget back in the left column under the overview -->
+    <div id="overview-services" class="services-widget widget" style="display:none;">
+      <h3 class="services-title">Services</h3>
+      <div class="services-content"></div>
+    </div>
+
+    <!-- right column widgets: donut + status counts -->
+    <div id="right-widgets">
+      <!-- partners summary list at the top of the right column -->
+  <div id="partners-summary" class="status-widget widget" style="display:none;">
+        <h3 class="services-title">Partners</h3>
+        <ul id="partners-list" class="partners-list"></ul>
+      </div>
+    <!-- overview donut card (separate widget box) -->
+    <div id="overview-pie" class="pie-widget widget" style="display:block; margin-top:10px;">
+      <h3 class="services-title">Progress Breakdown</h3>
+      <div class="pie-layout">
+        <div class="pie" id="overview-donut" style="--p:0%"><span class="pie-label" id="overview-donut-label">0%</span></div>
+        <div class="pie-legend" id="overview-legend" aria-hidden="false">
+          <div class="legend-item"><span class="swatch sw-complete" aria-hidden="true"></span><span>Complete</span></div>
+          <div class="legend-item"><span class="swatch sw-in-review" aria-hidden="true"></span><span>In Review</span></div>
+          <div class="legend-item"><span class="swatch sw-open" aria-hidden="true"></span><span>PR opened</span></div>
+        </div>
+      </div>
+    </div>
+  <!-- status counts widget; shows only statuses with count > 1 -->
+  <div id="overview-statuses" class="status-widget widget" style="display:none; margin-top:6px;">
+      <h3 class="services-title">PR Status Counts</h3>
+      <ul id="overview-status-list" class="status-list"></ul>
+    </div>
+    <!-- blockers bar chart widget: appears right under status counts -->
+    <div id="overview-blockers" class="pie-widget widget" style="display:none; margin-top:6px;">
+      <h3 class="services-title">Blockers</h3>
+      <div class="blockers-bars" id="blockers-chart"></div>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <small>Static OKR dashboard • Uses data.json in the same folder</small>
+  </footer>
+
+  <script>
+  let data = null;
+  const AUTO_REFRESH_MS = 60000; // 60s auto-refresh for dynamic updates
+  async function fetchData() {
+    try {
+      const resp = await fetch('data.json', { cache: 'no-store' });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      data = await resp.json();
+    } catch (err) {
+      console.warn('Could not load data.json, using embedded fallback. ', err);
+      data = { teams: [] };
+    }
+  }
+
+  function calcOverall() {
+  const totals = { in_review: 0, complete: 0, open: 0, merged: 0 };
+  const teamSel = document.getElementById('overview-team-select');
+  const selectedTeamId = teamSel ? teamSel.value : 'all';
+  const teamsToCount = (selectedTeamId && selectedTeamId !== 'all') ? data.teams.filter(t => t.id === selectedTeamId) : data.teams;
+  teamsToCount.forEach(team => team.repos.forEach(r => { totals.in_review += r.prs.in_review; totals.complete += r.prs.complete; totals.open += r.prs.open; totals.merged += (r.prs.merged || 0); }));
+  const totalPRs = totals.in_review + totals.complete + totals.open;
+  const totalNeeded = teamsToCount.reduce((acc, t) => acc + (t.repos ? t.repos.length : 0), 0);
+  const metric = document.getElementById('overview-metric-select')?.value || 'complete';
+    // Map metric to a count using available data. For metrics not present in the JSON, we infer or return 0.
+    let metricCount = 0;
+    let percentDone = 0;
+    switch (metric) {
+      case 'draft':
+        // Not tracked in current schema
+        metricCount = 0;
+        percentDone = totalPRs ? Math.round((metricCount / totalPRs) * 100) : 0;
+        break;
+        case 'all_statuses':
+          // show all PRs combined
+          metricCount = totalPRs;
+          percentDone = totalNeeded ? Math.round((metricCount / totalNeeded) * 100) : 0;
+          break;
+      case 'ready':
+        // Not tracked explicitly
+        metricCount = 0;
+        percentDone = totalPRs ? Math.round((metricCount / totalPRs) * 100) : 0;
+        break;
+      case 'in_review':
+        metricCount = totals.in_review;
+        percentDone = totalPRs ? Math.round((metricCount / totalPRs) * 100) : 0;
+        break;
+      case 'changes_requested':
+        // Not tracked explicitly
+        metricCount = 0;
+        percentDone = totalPRs ? Math.round((metricCount / totalPRs) * 100) : 0;
+        break;
+      case 'approved':
+      case 'merged':
+      case 'closed':
+        // Map approvals/merged/closed to complete count as a pragmatic choice
+        metricCount = totals.complete;
+        percentDone = totalPRs ? Math.round((metricCount / totalPRs) * 100) : 0;
+        break;
+      case 'blocked':
+        // Count repos that report blockers
+        metricCount = data.teams.reduce((acc, t) => acc + (t.repos ? t.repos.filter(r => r.blockers && r.blockers.length).length : 0), 0);
+        percentDone = totalNeeded ? Math.round((metricCount / totalNeeded) * 100) : 0;
+        break;
+      case 'open':
+        metricCount = totals.open;
+        percentDone = totalNeeded ? Math.round((metricCount / totalNeeded) * 100) : 0;
+        break;
+      case 'complete':
+      default:
+        metricCount = totals.complete;
+        percentDone = totalPRs ? Math.round((metricCount / totalPRs) * 100) : 0;
+        break;
+    }
+  return { totals, totalPRs, totalNeeded, percentDone, metric, metricCount };
+  }
+
+  function renderOverview() {
+    const el = document.getElementById('overview-progress');
+    const meta = document.getElementById('overview-meta');
+  const servicesWrap = document.getElementById('overview-services');
+    if (!data || !data.teams) return;
+    const s = calcOverall();
+    el.style.width = s.percentDone + '%';
+    el.textContent = s.percentDone + '%';
+    // render partners summary (right column, next to progress bar)
+    try {
+      const psWrap = document.getElementById('partners-summary');
+      const psList = document.getElementById('partners-list');
+      if (psWrap && psList) {
+        psList.innerHTML = '';
+        const items = (data.teams || []).map(t => ({ name: t.name, count: (t.repos ? t.repos.length : 0) }));
+        if (items.length) {
+          items.sort((a,b) => a.name.localeCompare(b.name));
+          items.forEach(it => {
+            const li = document.createElement('li');
+            const name = document.createElement('span'); name.className = 'partner-name'; name.textContent = it.name;
+            const cnt = document.createElement('span'); cnt.className = 'count-pill'; cnt.textContent = it.count;
+            li.appendChild(name); li.appendChild(cnt);
+            psList.appendChild(li);
+          });
+          psWrap.style.display = '';
+        } else {
+          psWrap.style.display = 'none';
+        }
+      }
+    } catch (e) { console.warn(e); }
+    // update donut
+    try {
+      const donut = document.getElementById('overview-donut');
+      const donutLabel = document.getElementById('overview-donut-label');
+      if (donut && donutLabel) {
+        const complete = s.totals.complete || 0;
+        const inReview = s.totals.in_review || 0;
+        const open = s.totals.open || 0;
+        const total = (complete + inReview + open) || 1;
+        const completePct = Math.round((complete / total) * 100);
+        const inReviewPct = Math.round((inReview / total) * 100);
+        const openPct = Math.round((open / total) * 100);
+        // If showing all statuses, draw three segments
+        const progressStart = '#06b6d4';
+        const progressEnd = '#0ea5a0';
+        if (s.metric === 'all_statuses') {
+          const first = `${completePct}%`;
+          const second = `${inReviewPct}%`;
+          donut.style.setProperty('--p', first);
+          // use progressStart as the primary color for the completed segment so the pie matches the progress bar
+          donut.style.background = `conic-gradient(${progressStart} ${first}, #f59e0b calc(${first}), #3b82f6 calc(${first} + ${second}), #e5e7eb 0)`;
+          donutLabel.textContent = completePct + '%';
+        } else {
+          // show selected metric share vs rest; reveal the progress gradient beneath using a conic mask
+          const metricCount = s.metricCount || 0;
+          const selPct = Math.round((metricCount / total) * 100);
+          donut.style.setProperty('--p', selPct + '%');
+          // background layers: bottom = progress gradient, top = conic mask that leaves the filled slice transparent
+          donut.style.background = `linear-gradient(90deg, ${progressStart}, ${progressEnd}), conic-gradient(rgba(0,0,0,0) 0 ${selPct}%, #e5e7eb ${selPct}% 100%)`;
+          donutLabel.textContent = selPct + '%';
+        }
+      }
+    } catch (e) { console.warn(e); }
+    if (s.metric === 'open') {
+      meta.textContent = `${s.metricCount} PR opened of ${s.totalNeeded} needed • ${s.totals.complete} complete • ${s.totals.in_review} in review • ${s.totals.open} PR opened • ${s.totalPRs} total PRs`;
+    } else {
+      meta.textContent = `${s.metricCount} complete • ${s.totals.complete} complete • ${s.totals.in_review} in review • ${s.totals.open} PR opened • ${s.totalPRs} total PRs`;
+    }
+
+  // render services for selected partner (when a specific partner is chosen)
+    if (servicesWrap) {
+      const content = servicesWrap.querySelector('.services-content');
+      // determine selected team
+      const teamSel = document.getElementById('overview-team-select');
+      const selectedTeamId = teamSel ? teamSel.value : 'all';
+      content.innerHTML = '';
+      if (selectedTeamId && selectedTeamId !== 'all') {
+        const team = data.teams.find(t => t.id === selectedTeamId);
+        if (team && team.repos && team.repos.length) {
+          const list = document.createElement('ul'); list.className = 'services-list';
+          // alphabetize by service (fallback to name)
+          const sorted = [...team.repos].sort((a,b) => ((a.service||a.name||'').localeCompare(b.service||b.name||'')));
+          sorted.forEach(r => {
+            const li = document.createElement('li');
+            const left = document.createElement('div'); left.className = 'service-left';
+            const nameEl = document.createElement('span'); nameEl.style.fontWeight = '600';
+            if (r.pr_link) {
+              const a = document.createElement('a'); a.href = r.pr_link; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.textContent = r.service || r.name || 'unnamed'; nameEl.appendChild(a);
+            } else {
+              nameEl.textContent = r.service || r.name || 'unnamed';
+            }
+            left.appendChild(nameEl);
+
+            const right = document.createElement('div'); right.className = 'service-badges';
+            // show badges according to the selected metric
+            if (r.prs) {
+              const prs = r.prs;
+              if (s.metric === 'all_statuses') {
+                if ((prs.complete || 0) > 0) { const b = document.createElement('span'); b.className = 'badge complete'; b.textContent = 'Done'; right.appendChild(b); }
+                if ((prs.in_review || 0) > 0) { const b = document.createElement('span'); b.className = 'badge in-review'; b.textContent = 'In review'; right.appendChild(b); }
+                if ((prs.open || 0) > 0) { const b = document.createElement('span'); b.className = 'badge open'; b.textContent = 'PR opened'; right.appendChild(b); }
+              } else if (s.metric === 'open') {
+                if ((prs.open || 0) > 0) { const b = document.createElement('span'); b.className = 'badge open'; b.textContent = 'PR opened'; right.appendChild(b); }
+              } else if (s.metric === 'in_review') {
+                if ((prs.in_review || 0) > 0) { const b = document.createElement('span'); b.className = 'badge in-review'; b.textContent = 'In review'; right.appendChild(b); }
+              } else if (s.metric === 'complete') {
+                if ((prs.complete || 0) > 0) { const b = document.createElement('span'); b.className = 'badge complete'; b.textContent = 'Done'; right.appendChild(b); }
+              } else if (s.metric === 'blocked') {
+                if (r.blockers && r.blockers.length) { const b = document.createElement('span'); b.className = 'badge in-review'; b.textContent = 'Blocked'; right.appendChild(b); }
+              }
+            }
+            // always show 'No access' badge in red when blockers contain "no access"
+            const hasNoAccess = Array.isArray(r.blockers) && r.blockers.some(b => typeof b === 'string' && b.toLowerCase().includes('no access'));
+            if (hasNoAccess) { const b = document.createElement('span'); b.className = 'badge no-access'; b.textContent = 'No access'; right.appendChild(b); }
+
+            li.appendChild(left);
+            li.appendChild(right);
+            list.appendChild(li);
+          });
+          content.appendChild(list);
+          servicesWrap.style.display = '';
+          // attach click handlers to pin the pie on small screens
+          list.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+            const pie = document.getElementById('overview-pie'); if (pie) pie.classList.add('pinned');
+          }));
+        } else {
+          content.textContent = 'No services for this partner.';
+          servicesWrap.style.display = '';
+        }
+      } else {
+        // when 'all' is selected, show every service across all teams (alphabetized)
+        const allRepos = [];
+        data.teams.forEach(t => { if (t.repos && t.repos.length) t.repos.forEach(r => { allRepos.push(Object.assign({}, r, { __teamName: t.name })); }); });
+        if (allRepos.length) {
+          const list = document.createElement('ul'); list.className = 'services-list';
+          const sorted = allRepos.sort((a,b) => ((a.service||a.name||'').localeCompare(b.service||b.name||'')));
+          sorted.forEach(r => {
+            const li = document.createElement('li');
+            const left = document.createElement('div'); left.className = 'service-left';
+            const nameEl = document.createElement('span'); nameEl.style.fontWeight = '600';
+            if (r.pr_link) {
+              const a = document.createElement('a'); a.href = r.pr_link; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.textContent = r.service || r.name || 'unnamed'; nameEl.appendChild(a);
+            } else {
+              nameEl.textContent = r.service || r.name || 'unnamed';
+            }
+            left.appendChild(nameEl);
+            const teamSpan = document.createElement('span'); teamSpan.className = 'service-team'; teamSpan.textContent = `(${r.__teamName})`;
+            left.appendChild(teamSpan);
+
+            const right = document.createElement('div'); right.className = 'service-badges';
+            // show badges according to selected metric (same logic as team-specific)
+            if (r.prs) {
+              const prs = r.prs;
+              if (s.metric === 'all_statuses') {
+                if ((prs.complete || 0) > 0) { const b = document.createElement('span'); b.className = 'badge complete'; b.textContent = 'Done'; right.appendChild(b); }
+                if ((prs.in_review || 0) > 0) { const b = document.createElement('span'); b.className = 'badge in-review'; b.textContent = 'In review'; right.appendChild(b); }
+                if ((prs.open || 0) > 0) { const b = document.createElement('span'); b.className = 'badge open'; b.textContent = 'PR opened'; right.appendChild(b); }
+              } else if (s.metric === 'open') {
+                if ((prs.open || 0) > 0) { const b = document.createElement('span'); b.className = 'badge open'; b.textContent = 'PR opened'; right.appendChild(b); }
+              } else if (s.metric === 'in_review') {
+                if ((prs.in_review || 0) > 0) { const b = document.createElement('span'); b.className = 'badge in-review'; b.textContent = 'In review'; right.appendChild(b); }
+              } else if (s.metric === 'complete') {
+                if ((prs.complete || 0) > 0) { const b = document.createElement('span'); b.className = 'badge complete'; b.textContent = 'Done'; right.appendChild(b); }
+              } else if (s.metric === 'blocked') {
+                if (r.blockers && r.blockers.length) { const b = document.createElement('span'); b.className = 'badge in-review'; b.textContent = 'Blocked'; right.appendChild(b); }
+              }
+            }
+            // always show 'No access' badge in red when blockers contain "no access"
+            const hasNoAccess2 = Array.isArray(r.blockers) && r.blockers.some(b => typeof b === 'string' && b.toLowerCase().includes('no access'));
+            if (hasNoAccess2) { const b = document.createElement('span'); b.className = 'badge no-access'; b.textContent = 'No access'; right.appendChild(b); }
+
+            li.appendChild(left);
+            li.appendChild(right);
+            list.appendChild(li);
+          });
+          content.appendChild(list);
+          servicesWrap.style.display = '';
+          // attach click handlers to pin the pie on small screens
+          list.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+            const pie = document.getElementById('overview-pie'); if (pie) pie.classList.add('pinned');
+          }));
+        } else {
+          content.textContent = 'No services available.';
+          servicesWrap.style.display = '';
+        }
+      }
+    }
+
+
+    // render status counts widget (only statuses with count > 1)
+    try {
+      const statusWidget = document.getElementById('overview-statuses');
+      const statusList = document.getElementById('overview-status-list');
+      if (statusWidget && statusList) {
+        statusList.innerHTML = '';
+        // Render two rows of three: top row and then three other statuses beneath
+        const entries = [
+          ['Complete', s.totals.complete || 0, 'complete'],
+          ['In review', s.totals.in_review || 0, 'in-review'],
+          ['PR opened', s.totals.open || 0, 'open'],
+          ['Merged', s.totals.merged || 0, 'merged'],
+          ['Approved', 0, 'approved'],
+          ['Closed', 0, 'closed']
+        ];
+        entries.forEach(([label, count, cls]) => {
+          const li = document.createElement('li'); li.className = cls;
+          const num = document.createElement('div'); num.className = 'status-num'; num.textContent = count;
+          const lbl = document.createElement('div'); lbl.className = 'status-label'; lbl.textContent = label;
+          li.appendChild(num); li.appendChild(lbl);
+          statusList.appendChild(li);
+        });
+        statusWidget.style.display = '';
+      }
+    } catch (e) { console.warn(e); }
+
+    // render blockers bar chart widget (breakdown by blocker type)
+    try {
+      const blkWrap = document.getElementById('overview-blockers');
+      const chart = document.getElementById('blockers-chart');
+      if (blkWrap && chart) {
+        chart.innerHTML = '';
+        // determine scope (selected team or all)
+        const teamSel = document.getElementById('overview-team-select');
+        const selectedTeamId = teamSel ? teamSel.value : 'all';
+        const teams = (selectedTeamId && selectedTeamId !== 'all') ? data.teams.filter(t => t.id === selectedTeamId) : data.teams;
+        const byType = new Map(); // key: normalized type, value: { label, count }
+        teams.forEach(t => (t.repos || []).forEach(r => {
+          (Array.isArray(r.blockers) ? r.blockers : []).forEach(raw => {
+            const str = String(raw || '').trim(); if (!str) return;
+            const key = str.toLowerCase();
+            const cur = byType.get(key) || { label: str, count: 0 };
+            cur.count += 1; if (!byType.has(key)) cur.label = str; byType.set(key, cur);
+          });
+        }));
+        const entries = Array.from(byType.values()).sort((a,b) => b.count - a.count);
+        const total = entries.reduce((acc, e) => acc + e.count, 0);
+        if (!total) {
+          // Show widget with an empty message instead of hiding it
+          blkWrap.style.display = '';
+          const msg = document.createElement('div');
+          msg.className = 'empty-message';
+          msg.textContent = 'No blockers reported.';
+          chart.appendChild(msg);
+          return;
+        }
+        const max = entries[0]?.count || 1;
+        const colors = ['#ef4444','#f59e0b','#3b82f6','#10b981','#8b5cf6','#14b8a6','#84cc16','#e11d48','#fb923c','#06b6d4'];
+        entries.forEach((e, i) => {
+          const row = document.createElement('div'); row.className = 'blockers-bar';
+          const label = document.createElement('div'); label.className = 'bar-label'; label.textContent = e.label; label.title = e.label;
+          const track = document.createElement('div'); track.className = 'bar-track';
+          const fill = document.createElement('div'); fill.className = 'bar-fill';
+          const pct = Math.max(6, Math.round((e.count / max) * 100)); // min width for visibility
+          fill.style.width = pct + '%';
+          fill.style.background = colors[i % colors.length];
+          const count = document.createElement('div'); count.className = 'bar-count'; count.textContent = e.count;
+          track.appendChild(fill);
+          row.appendChild(label);
+          row.appendChild(track);
+          row.appendChild(count);
+          chart.appendChild(row);
+        });
+        blkWrap.style.display = '';
+      }
+    } catch (e) { console.warn(e); }
+  }
+
+  (async function init(){ await fetchData();
+    // populate team select
+    const teamSel = document.getElementById('overview-team-select');
+    if (teamSel && data.teams) {
+      data.teams.forEach(t => {
+        const opt = document.createElement('option'); opt.value = t.id; opt.textContent = t.name; teamSel.appendChild(opt);
+      });
+    }
+    // default metric = 'open' so Home opens showing All partners with Open PRs
+    const metricSel = document.getElementById('overview-metric-select');
+    if (metricSel) {
+      metricSel.value = 'open';
+      metricSel.addEventListener('change', () => renderOverview());
+    }
+    renderOverview();
+    // auto-refresh to keep progress bar and widgets dynamic
+    if (!window.__okrAutoRefresh) {
+      window.__okrAutoRefresh = setInterval(async () => { try { await fetchData(); renderOverview(); } catch (_) {} }, AUTO_REFRESH_MS);
+    }
+    if (teamSel) teamSel.addEventListener('change', () => { renderOverview(); if (teamSel.value === 'all') { const pie = document.getElementById('overview-pie'); if (pie) pie.classList.remove('pinned'); } });
+  // unpin pie if user clicks outside services list
+  document.addEventListener('click', (e) => { const pie = document.getElementById('overview-pie'); if (!pie) return; const services = document.querySelector('.services-content'); if (!services) return; if (!services.contains(e.target)) pie.classList.remove('pinned'); });
+  })();
+
+  </script>
+</body>
+</html>
